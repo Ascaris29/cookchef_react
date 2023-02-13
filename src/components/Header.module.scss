@@ -1,7 +1,11 @@
-
 .header{
+    background-color: #fff;
     padding:10px 20px;
     box-shadow: var(--box-shadow-nav);
+    i{
+        color:var(--primary);
+       
+    }
     img{
         width:150px;
     }

@@ -1,4 +1,7 @@
+import styles from "./Footer.module.scss";
 
 export default function Footer(){
-    return <div className="b1"> Footer </div>
+    return (
+        <footer className={`${styles.footer} d-flex flex-row align-center justify-center p-20`}> Copyright © 2023 Cookchef ascaris Inc. </footer>
+    );
 }
