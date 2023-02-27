@@ -16,12 +16,12 @@ export default function Header(){
             <h1>Cookchef</h1>
         </div>
         <ul className={styles.headerList}>
-            <button className="btn btn-reverse-primary m-r-5 "><span>WishList</span><i class="fa-solid fa-heart m-l-5"></i></button>
+            <button className="btn btn-reverse-primary m-r-5 "><span>WishList</span><i className="fa-solid fa-heart m-l-5"></i></button>
             <button className="btn btn-primary">connexion</button>
         </ul>
         {/* lorsque que l'on clique sur le menu responsive en xs, la fonction setShowMenu passe à true et les li s'affichent à l'interieur */}
         <i onClick={ 
-            () => { setShowMenu(true) }}class={`fa-solid fa-bars ${styles.headerXs}`}></i>
+            () => { setShowMenu(true) }}className={`fa-solid fa-bars ${styles.headerXs}`}></i>
         { showMenu && 
         <>
         {/* lorsque le menu xs est ouvert, on crée un calque qui entourt la page entière*/}
