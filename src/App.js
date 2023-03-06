@@ -1,13 +1,17 @@
-import Content from "./components/Content";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+
+import Footer from "./components/footer/Footer";
+import Header from "./components/header/Header";
 import styles from "./App.module.scss";
+import Homepage from "./pages/Homepage/Homepage";
+//import seedRecipes from "./data/Seed";
+
+//seedRecipes();
 
 export default function App() {
   return (
     <div className={`app-container d-flex flex-column ${styles.appContainer}`}>
       <Header/>
-      <Content />
+      <Homepage />
       <Footer />
     </div>
   );

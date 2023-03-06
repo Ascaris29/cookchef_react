@@ -1,4 +1,4 @@
-import styles from '../components/HeaderMenu.module.scss';
+import styles from '../menu/HeaderMenu.module.scss';
 
 function HeaderMenu(){
     return (

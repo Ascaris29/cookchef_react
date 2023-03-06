@@ -1,10 +1,10 @@
-import styles from "./Content.module.scss";
-import { data } from "../data/Recipes";
-import Recipe from "./Recipes";
+import styles from "./Homepage.module.scss";
+import { data } from "../../data/Recipes";
+import Recipe from "./components/recipes/Recipes";
 import { useState } from 'react';
 
 
-export default function Content(){
+export default function Homepage(){
     const recepies = data;
     const [filter, setFilter] = useState("");
 
