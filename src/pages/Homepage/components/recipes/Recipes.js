@@ -1,14 +1,32 @@
+import { useContext } from "react";
+import { ApiContext } from "../../../../context/ApiContext";
 import styles from "./Recipes.module.scss";
-import { useState } from 'react';
 
-export default function Recipe({title, image}){
 
-    const [liked, setLiked] = useState(false);
+export default function Recipe({ recipe : { _id, liked, title, image}, toggleLikedRecipe}){
 
-    function handleClick(){
-        // au clic, cela passe l'état à true puis à false etc car c'est l'inverse de ce qui est dans l'état au clic 
-        // si l'état est sur true, le coeur devient rouge
-        setLiked(!liked);
+    const BASE_URL_API = useContext(ApiContext);
+
+    //fonction qui patche les recettes de l'api
+    //modifie l'état du like à l'intérieur de l'api 
+    async function handleClick(){
+        try{
+            const response = await fetch(`${BASE_URL_API}/${ _id}`, {
+                method : 'PATCH',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    liked : !liked,
+                })
+            })
+            if(response.ok){
+                const updatedRecipe = await response.json();
+                toggleLikedRecipe(updatedRecipe);
+            }
+        }catch(e){
+            console.log('erreur');
+        }
     } 
     return (
         <div className={styles.recipe} onClick={handleClick}>
