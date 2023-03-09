@@ -2,7 +2,7 @@
 import { data } from '../data/Recipes';
 
 export default async function seedRecipes(){
-    await fetch("https://restapi.fr/api/recipes", {
+    await fetch("https://restapi.fr/api/Recipes", {
         method : 'POST',
         headers : {
             'Content-Type' : 'application/json'

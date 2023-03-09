@@ -3,6 +3,7 @@ import Recipe from "./components/recipes/Recipes";
 import { useState, useEffect, useContext } from 'react';
 import Loading from "../../components/loading/Loading";
 import { ApiContext } from "../../context/ApiContext";
+import Search from "./components/recipes/Search/Search";
 
 
 export default function Homepage(){
@@ -52,12 +53,6 @@ export default function Homepage(){
         setRecipes(recepies.map((r) => r._id === updatedRecipe._id ? updatedRecipe : r))
     }
 
-
-    function handleInput(e){
-        const filter = e.target.value;
-        setFilter(filter.trim().toLowerCase());
-    }
-
     
 
     return (
@@ -67,10 +62,7 @@ export default function Homepage(){
             </h1>
             <div className={`d-flex flex-column card p-20 flex-fill m-b-20 ${styles.contentCard}`}>
                 {/*--------------------------------Barre de recherche ------------------------------------------------*/}
-                <div className={`d-flex flex-row justify-center align-center m-b-20 m-t-20 ${styles.searchBar}`}>
-                    <i className="fa-solid fa-magnifying-glass m-r-10"></i>
-                    <input onInput={handleInput} className="flex-fill" type="text" placeholder="Rechercher" />
-                </div>
+                <Search setFilter={setFilter}/>
                 {
                     isLoading && !recepies.length ?( 
                         <Loading />
