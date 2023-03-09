@@ -11,6 +11,7 @@
     }
     img{
         width:150px;
+        cursor:pointer;
     }
     .headerList{
         @include mixin.xs{
