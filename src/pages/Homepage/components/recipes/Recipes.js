@@ -3,13 +3,13 @@ import { ApiContext } from "../../../../context/ApiContext";
 import styles from "./Recipes.module.scss";
 
 
-export default function Recipe({ recipe : { _id, liked, title, image}, toggleLikedRecipe}){
+export default function Recipe({ recipe : { _id, liked, title, image}, toggleLikedRecipe, deleteRecipe}){
 
     const BASE_URL_API = useContext(ApiContext);
 
     //fonction qui patche les recettes de l'api
     //modifie l'état du like à l'intérieur de l'api 
-    async function handleClick(){
+    async function handleClickLike(){
         try{
             const response = await fetch(`${BASE_URL_API}/${ _id}`, {
                 method : 'PATCH',
@@ -27,9 +27,24 @@ export default function Recipe({ recipe : { _id, liked, title, image}, toggleLik
         }catch(e){
             console.log('erreur');
         }
-    } 
+    }
+    //id recupéré par les propriétés de la fonction recipe
+    async function handleClickDelete(e){
+        e.stopPropagation();
+        try{
+            const response = await fetch(`${BASE_URL_API}/${ _id}`, {
+                method : 'DELETE'
+            })
+            if (response.ok){
+                deleteRecipe(_id);
+            }
+        }catch(e){
+            console.log('error !')
+        }
+    }
     return (
-        <div className={styles.recipe} onClick={handleClick}>
+        <div className={styles.recipe} onClick={handleClickLike}>
+            <i className="fa-solid fa-xmark" onClick={ handleClickDelete }></i>
             <div className={styles.imageContainer}>
                 <img src={ image } alt=""/>
             </div>

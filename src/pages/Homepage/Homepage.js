@@ -1,51 +1,20 @@
 import styles from "./Homepage.module.scss";
 import Recipe from "./components/recipes/Recipes";
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import Loading from "../../components/loading/Loading";
 import { ApiContext } from "../../context/ApiContext";
 import Search from "./components/recipes/Search/Search";
+import useFetchData from '../../hooks/useFetchData';
 
 
 export default function Homepage(){
-    const [recepies, setRecipes] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState("");
     const BASE_URL_API = useContext(ApiContext);
     const [page, setPage] = useState(1);
+    //on invoque notre hook avec l'url et la page en paramètres
+    //on recupere les données qui ont été retournées par le hook
+    const [[recepies, setRecipes], isLoading] = useFetchData(BASE_URL_API, page);
 
-    useEffect(() => {
-        //verifier que l'on est toujours besoin des infos lorsque le call est terminé
-        let cancel = false;
-        async function fetchRecipes(){
-            try{
-                setIsLoading(true);
-                const response = await fetch(`${BASE_URL_API}?skip=${(page - 1) * 18}&limit=18`);
-                //verifie que la reponse est ok et que cancel est à false
-                if(response.ok && !cancel){
-                    const newRecipes = await response.json();
-                     //absolument RC, donc à revoir 
-                    setRecipes((x) => 
-                        Array.isArray(newRecipes)
-                         ? [...x, ...newRecipes]
-                         : [...x, newRecipes]
-                    );
-                }
-            }catch(e){
-                console.log("erreur");
-            }finally{
-                if(!cancel){
-                    setIsLoading(false);
-                }
-                
-            }
-        }
-        fetchRecipes();
-        //fonction de clean up
-        //je ne veux plus recuperer les informations
-        return () => (cancel = true);
-        //tant que mon fetch ne change pas, nous ne faisons plus rien
-        //tant que ma page ne change pas, ne change rien
-    }, [BASE_URL_API, page]);
 
     //fonction qui modifie une recette quand la recette a été likée
     // si l'id de la recette modifiée correspond à l'id de la liste de recette, on la modifie sinon on ne modifie rien 
@@ -53,7 +22,13 @@ export default function Homepage(){
         setRecipes(recepies.map((r) => r._id === updatedRecipe._id ? updatedRecipe : r))
     }
 
-    
+    //fonction qui vient supprimer une recette avec sa methode filter qui va créer un tableau avec les éléments dont l'id sont differents de l'id en paramètre
+    function deleteRecipe(_id){
+        setRecipes(
+            recepies.filter((r) => r._id !== _id)
+        );
+    }
+
 
     return (
         <main className="container flex-fill p-20 d-flex flex-column">
@@ -71,7 +46,12 @@ export default function Homepage(){
                             {recepies
                             .filter(r => r.title.toLowerCase().startsWith(filter))
                             .map((r) => (
-                                <Recipe key={ r._id } recipe={ r } toggleLikedRecipe={ updateRecipe }/> 
+                                <Recipe 
+                                    key={ r._id } 
+                                    recipe={ r } 
+                                    toggleLikedRecipe={ updateRecipe }
+                                    deleteRecipe={ deleteRecipe }
+                                /> 
                                 ))}
                         </div>
                     )
